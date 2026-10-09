@@ -1,0 +1,31 @@
+services:
+    db:
+        build: .
+        image: pg18-ru:latest
+        container_name: pg18-ru
+        env_file: db.env
+        ports:
+            - "127.0.0.1:5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 5s
+            timeout: 3s
+            retries: 10
+        restart: unless-stopped
+
+    pinger:
+        build:
+            context: ./pinger
+        image: pg-pinger:1.0.0
+        container_name: pg-pinger
+        env_file:
+            - ${PINGER_ENV_FILE:-./pinger.env}
+        volumes:
+            - pinger_logs:/logs
+        restart: unless-stopped
+
+volumes:
+    pgdata:
+    pinger_logs:

@@ -1,0 +1,11 @@
+[database]
+host = "db"
+port = 5432
+dbname = "appdb"
+sslmode = "prefer"
+connect_timeout = 5
+statement_timeout = 5
+application_name = "pg-pinger"
+
+[check]
+expected_version_prefix = "PostgreSQL 18"
