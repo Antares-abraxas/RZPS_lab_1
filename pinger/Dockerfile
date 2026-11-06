@@ -10,7 +10,7 @@ RUN useradd --system --uid 10001 --no-create-home pinger \
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
 COPY pinger.py config.toml ./
