@@ -18,12 +18,15 @@ services:
     pinger:
         build:
             context: ./pinger
+            network: host
         image: pg-pinger:1.0.0
         container_name: pg-pinger
+        network_mode: host
         env_file:
             - ${PINGER_ENV_FILE:-./pinger.env}
         volumes:
             - pinger_logs:/logs
+            - ./pinger/config.toml:/app/config.toml
         restart: unless-stopped
 
 volumes:

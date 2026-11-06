@@ -1,3 +1,4 @@
-.env
+db.env
+pinger.env
 .venv/
 __pycache__/
