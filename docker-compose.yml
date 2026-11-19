@@ -1,0 +1,43 @@
+services:
+    db:
+        build: .
+        image: pg18-boardgames-db:1.0.0
+        container_name: pg18-boardgames-db
+        env_file: db.env
+        ports:
+            - "127.0.0.1:5433:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql
+        networks:
+            - shopnet
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U postgres"]
+            interval: 5s
+            timeout: 3s
+            retries: 20
+            start_period: 10s
+        restart: unless-stopped
+
+    shop:
+        build:
+            context: ./shop
+        image: pg-boardgames:1.0.0
+        env_file:
+            - ${SHOP_ENV_FILE:-./app.env}
+        stdin_open: true
+        tty: true
+        profiles: ["app"]
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - shopnet
+        volumes:
+            - shop_logs:/logs
+
+networks:
+    shopnet:
+
+volumes:
+    pgdata:
+    shop_logs:

@@ -1,0 +1,22 @@
+[database]
+host = "db"
+port = 5432
+dbname = "appdb"
+sslmode = "prefer"
+connect_timeout = 5
+statement_timeout = 10
+application_name = "boardgames-cli"
+
+[app]
+display_limit = 200
+tables = ["publishers", "games", "customers", "orders", "order_items"]
+
+[[relations]]
+parent = "orders"
+child = "order_items"
+fk = "order_id"
+
+[[relations]]
+parent = "publishers"
+child = "games"
+fk = "publisher_id"
